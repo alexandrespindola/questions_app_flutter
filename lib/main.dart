@@ -3,11 +3,12 @@ import 'components/resultado.dart';
 import 'components/questionario.dart';
 import 'utils/utils.dart';
 
-main() => runApp(PerguntaApp());
+main() => runApp(const PerguntaApp());
 
 class _PerguntaAppState extends State<PerguntaApp> {
   int _perguntaSelecionada = 0;
   int _pontuacaoTotal = 0;
+  
   void _responder(int pontuacao) {
     if (temPerguntaSelecionada) {
       setState(() {
@@ -15,7 +16,13 @@ class _PerguntaAppState extends State<PerguntaApp> {
         _pontuacaoTotal += pontuacao;
       });
     }
-    print(_pontuacaoTotal);
+  }
+
+  void _reiniciarQuestionario() {
+    setState(() {
+      _perguntaSelecionada = 0;
+      _pontuacaoTotal = 0;
+    });
   }
 
   bool get temPerguntaSelecionada {
@@ -64,14 +71,17 @@ class _PerguntaAppState extends State<PerguntaApp> {
                 perguntas: _perguntas,
                 perguntaSelecionada: _perguntaSelecionada,
                 responder: _responder)
-            : Resultado(pontuacao: _pontuacaoTotal),
+            : Resultado(pontuacao: _pontuacaoTotal, quandoReiniciarQuestionario: _reiniciarQuestionario),
       ),
     );
   }
 }
 
 class PerguntaApp extends StatefulWidget {
+  const PerguntaApp({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _PerguntaAppState createState() {
     return _PerguntaAppState();
   }
